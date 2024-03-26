@@ -239,6 +239,4 @@ mov DWORD PTR [ebp-8], eax
 mov eax, DWORD PTR [ebp-8]
 ```
 
-
-
-朱逸晨  2024.3.18  ver1.2
+2024.3.18  ver1.2
