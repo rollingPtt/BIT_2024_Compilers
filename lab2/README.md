@@ -117,7 +117,7 @@ int from_string_to_int(string str);
    # add_link_options(-fsanitize=address)
    add_executable(Compilerlab2
     main.cpp	# 请根据你自己的文件名修改
-    F.cpp		# 请根据你自己的文件明修改
+    F.cpp	# 请根据你自己的文件名修改
    )
    target_compile_features(Compilerlab2 PRIVATE cxx_std_14)
    
@@ -158,7 +158,7 @@ int from_string_to_int(string str);
 5. 如果你在提交代码后，发生**编译错误**，具体如下
 
    ```
-   collect2: error: ld returned 1 exit status										# 尤其是这一句
+   collect2: error: ld returned 1 exit status		# 尤其是这一句
    make[2]: *** [CMakeFiles/Compilerlab2.dir/build.make:113: Compilerlab2] Error 1
    make[1]: *** [CMakeFiles/Makefile2:83: CMakeFiles/Compilerlab2.dir/all] Error 2
    make: *** [Makefile:91: all] Error 2
