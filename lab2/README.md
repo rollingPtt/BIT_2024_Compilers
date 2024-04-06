@@ -22,11 +22,15 @@
 
 - F.h
 
-  用于声明函数，**是最终提交的文件之二**
+  用于声明函数，**是最终提交的文件之二**。
 
 - F.cpp
 
-  用于具体定义 F.h 中的函数，**是最终提交的文件之三**
+  用于具体定义 F.h 中的函数，**是最终提交的文件之三**。
+
+- CMakeLists.txt
+
+  用于组装文件，后文有提到它的写法，**是最终提交的文件之四**。
 
 
 
@@ -35,7 +39,7 @@
 1、准备工作 1
 
 ```
-定义函数: classification
+定义函数: int classification(string)
 作用: 对字符串进行词法分析
 接受的输入: 字符串
 返回值: 一个整数, 代表该字符串的内容
@@ -62,18 +66,34 @@ int classification(string str_to_be_processed){
 2、准备工作 2
 
 ```
-定义函数: tokenization
-作用: 对文本进行分词
-接受的输入: 待处理的字符串
-返回值: 一个处理后的字符串
-下面是一个示例:
+定义函数: string tokenization(string)
+作用: 对文本添加空格
+接受的输入: 待处理的字符串, 如 int main(){int a;a=1+1;println_int(a);return 0;};
+返回值: 一个处理后的字符串, 上面的例子是 int main ( ) { int a ; a = 1 + 1 ; println_int ( a ) ; return 0 ; }
+这样处理后就和lab1一模一样了.
+
+该函数的实现原理是: 依次读字符, 并判断组成的字符串是否可识别.
+下面是一个简单的示例, 假设我们读到的是 str_before_processed = "int main(){return 0;}"
 string tokenization(string str_before_processed){
-	...
+	string str_after_process = "";
+	string str_temp = "";
+	for (char i: str_before_processed) {
+		// 如果 str_temp+i 不是可识别字符串, 说明 str_temp 是一个单词
+		if ( classification(str_temp+i)==0 ) {
+			str_after_process += (str_temp+" ");
+			// 如果 i 是无意义的空格, 直接忽略; 否则是有意义的字符, 选择保留
+			if (i!=' ') {
+				str_temp = "" + i;
+			}
+		}
+		// 否则 str_temp+i 是可识别的字符串, 把 i 加到 str_temp 的后面
+		else {
+			str_temp += i;
+		}
+	}
 	return str_after_process;
 }
-如输入为: println_int(a);
-处理后返回: println_int ( a ) ;
-这样处理后方便使用 split() 函数处理. 
+友情提醒: 这个示例非常简单, 实际上你会遇到一些其他的细节处理, 有待你自己去发现~
 ```
 
 3、其他准备工作
@@ -85,15 +105,17 @@ void print_begin();
 2. 用于输出程序固定结尾的
 void print_end();
 3. 把字符串转化为数字的
+输入: "-10"
+输出: -10
 int from_string_to_int(string str);
 ...
-根据你自己的需要添加
+根据你自己的需要添加函数. 
 ```
 
 4、代码大致过程
 
 1. 第一步，当然是读入数据
-2. **第二步**，预处理数据，或者叫分词。不知道其他的专业怎么想，对我们 AI 专业的来说，预处理数据已经是肌肉记忆了。这一步的目的是把输入转化成好处理的形式。比如把黏在一起的 `main` 和 `(` 用空格分开，方便后续的识别，又如把表达式 `a=1+2*3;` 转化成 `a = 1 + 2 * 3 ;` ，显然也是为了方便后面的计算。
+2. **第二步**，预处理数据，或者叫分词。不知道其他的专业怎么想，对我们 AI 专业的来说，预处理数据已经是肌肉记忆了。这一步的目的是把输入转化成好处理的形式。也就是我上面写的 tokenization 函数做的事情。
 3. 第三步，输出程序的开头固定内容。该步骤可以放在第一步。
 4. **第四步**，逐行识别表达式的含义，该定义新变量就定义新变量，该赋值就赋值，该计算表达式就计算，该 `println_int` 就 `println_int` ，该 `return` 就 `return`。
 5. 第五步，输出程序的结尾固定内容。
@@ -117,11 +139,12 @@ int from_string_to_int(string str);
    # add_link_options(-fsanitize=address)
    add_executable(Compilerlab2
     main.cpp	# 请根据你自己的文件名修改
-    F.cpp	# 请根据你自己的文件名修改
+    F.cpp		# 请根据你自己的文件名修改
    )
    target_compile_features(Compilerlab2 PRIVATE cxx_std_14)
-   
    ```
+
+   补充：如果你用了 FLEX 之类的辅助生成工具的话，因为我没用到这个，这种我不会写，可以看看题目文件或者自己研究一下吧。
 
 3. 当遇到大片的 internal error 时
 
@@ -158,7 +181,7 @@ int from_string_to_int(string str);
 5. 如果你在提交代码后，发生**编译错误**，具体如下
 
    ```
-   collect2: error: ld returned 1 exit status		# 尤其是这一句
+   collect2: error: ld returned 1 exit status	# 尤其是这一句
    make[2]: *** [CMakeFiles/Compilerlab2.dir/build.make:113: Compilerlab2] Error 1
    make[1]: *** [CMakeFiles/Makefile2:83: CMakeFiles/Compilerlab2.dir/all] Error 2
    make: *** [Makefile:91: all] Error 2
@@ -290,8 +313,6 @@ int main() {
 }
 ```
 
-
-
 ```
 # 测试用例2
 # 说明: 该用例测试了所有的简单双目运算
@@ -329,7 +350,7 @@ int main ( ) {
     println_int(c);
     c=a<=b;
     println_int(c);
-    return 1;
+    return 0;
 }
 ```
 
@@ -370,6 +391,18 @@ BB;
 
 ```
 # 测试用例5
+# 说明: 该用例测试了一些参数的返回值
+int main(){
+	println_int(10);
+	int a;
+	a=20;
+	println_int(a);
+	return 30;
+}
+```
+
+```
+# 测试用例6
 # 说明: 该用例为难度二, 我们测试一些较为复杂的运算
 int main(){
     int a1;
@@ -391,10 +424,9 @@ int main(){
 ```
 
 ```
-用例 5 的期待回答:
+用例 6 的期待回答:
 3, 0, 1, 1, 0
 ```
 
 
-
-朱逸晨  2024.4.2  ver1
+2024.4.6  ver1.3
