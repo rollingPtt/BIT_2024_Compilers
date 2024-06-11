@@ -40,7 +40,7 @@
 
 如果你在 lab3 就已经像我一样单独写了个函数处理**表达式**，那么理论上，lab4 相比于 lab3，不过就是多了对 `if` 和 `while` 等语句的处理，而其他部分几乎不需要任何改变！
 
-这样一来，lab4 就非常简单了。因此，本文是基于 lab3 的代码上进行修改，关于 lab3 的文章在这里：[BIT 2024 编译原理 Lab. 3 三代编译器实验说明和要求-CSDN博客](https://blog.csdn.net/m0_70241024/article/details/139033840?spm=1001.2014.3001.5502)
+这样一来，lab4 就非常简单了。因此，本文是基于 lab3 的代码上进行修改，关于 lab3 的文章在这里：[Lab3](https://github.com/rollingPtt/BIT_2024_Compilers/blob/main/Lab3/README.md)
 
 ### 2、函数的划分
 
