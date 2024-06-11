@@ -8,7 +8,7 @@
 
 ### 二、文件
 
-共包括四个文件：
+共包括五个文件：
 
 - main_without_arg.cpp
 
@@ -82,7 +82,10 @@ string tokenization(string str_before_processed){
 		if ( classification(str_temp+i)==0 ) {
 			str_after_process += (str_temp+" ");
 			// 如果 i 是无意义的空格, 直接忽略; 否则是有意义的字符, 选择保留
-			if (i!=' ') {
+			if (i==' ') {
+				str_temp = "";
+			}
+			else {
 				str_temp = "" + i;
 			}
 		}
@@ -93,7 +96,29 @@ string tokenization(string str_before_processed){
 	}
 	return str_after_process;
 }
-友情提醒: 这个示例非常简单, 实际上你会遇到一些其他的细节处理, 有待你自己去发现~
+提醒: 这个示例非常简单, 实际上你会遇到一些其他的细节处理, 你自己写写就知道了~
+```
+
+<font size='5'>下面是一个更详细的例子</font>
+
+<font size='10'>int main()</font>
+
+```
+1. 读 'i' , 发现 "i" 是合法的字符串, 继续往下读
+2. 读 'n' , 发现 "in" 是合法的字符串, 继续往下读
+3. 读 't' , 发现 "int" 是合法的字符串, 继续往下读
+4. 读 ' '(空格), 发现 "int " 不是合法的字符串, 说明 "int" 是一个词, 把 "int" 存入 str_after_process,  str_after_process = “int”
+5. 当前符号是 ' '(空格), 没有意义, 直接丢弃. 
+6. 读 'm' , 发现 "m" 是合法的字符串, 继续往下读
+7. 读 'a' ,  发现 "ma" 是合法的字符串, 继续往下读
+8. 读 'i' , 发现 "mai" 是合法的字符串, 继续往下读
+9. 读 'n' , 发现 "main" 是合法的字符串, 继续往下读
+10. 读 '(' , 发现 "main(" 不是合法的字符串, 说明 "main" 是一个词, 把 "main" 存入 str_after_process,  str_after_process = “int main”
+11. 当前符号是 '(', 保留
+12. 读 ')' ,  发现 "()" 不是合法的字符串, 说明 "(" 是一个词, 把 "(" 存入 str_after_process, str_after_process = “int main (”
+13. 当前符号是 ')', 保留
+14. 后面没有字符了, 说明 ")" 是最后一个词, 把 ")" 存入 str_after_process,  str_after_process = “int main ( )”
+15. 分词结束, return 的内容是: "int main ( )"
 ```
 
 3、其他准备工作
@@ -115,7 +140,7 @@ int from_string_to_int(string str);
 4、代码大致过程
 
 1. 第一步，当然是读入数据
-2. **第二步**，预处理数据，或者叫分词。不知道其他的专业怎么想，对我们 AI 专业的来说，预处理数据已经是肌肉记忆了。这一步的目的是把输入转化成好处理的形式。也就是我上面写的 tokenization 函数做的事情。
+2. **第二步**，预处理数据，或者叫分词。这一步的目的是把输入转化成好处理的形式。也就是我上面写的 tokenization 函数做的事情。
 3. 第三步，输出程序的开头固定内容。该步骤可以放在第一步。
 4. **第四步**，逐行识别表达式的含义，该定义新变量就定义新变量，该赋值就赋值，该计算表达式就计算，该 `println_int` 就 `println_int` ，该 `return` 就 `return`。
 5. 第五步，输出程序的结尾固定内容。
@@ -233,15 +258,17 @@ int from_string_to_int(string str);
    
    int classification(string str) {
        smatch match;
+       // 不用正则表达式匹配
        if ( str=="main" )								return 1;
        if ( str=="int" )								return 2;
        if ( str=="return" )							return 3;
+       // 实在不好处理的内容可以适当地用正则表达式
        if ( regex_match(str, match, 标识符) )				return 11;
        if ( regex_match(str, match, 数字) )				 return 21;
        if ( regex_match(str, match, 运算符) )				return 31;
        if ( regex_match(str, match, 其他符号串) )			return ...;
        
-       return -1;
+       return 0;
    }
    ```
 
@@ -429,4 +456,5 @@ int main(){
 ```
 
 
-2024.4.6  ver1.3
+
+2024.4.6  ver1.4
