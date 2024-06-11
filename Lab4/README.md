@@ -76,16 +76,16 @@ if ( a>3 ) {
 
 ```
 if (a>3) { if (a<10) { println_int(a); } while (a<b) { println_int(b); a=a+1; } }
-         Δ																		Δ
+	 Δ									Δ
 ```
 
 是一个句子。在这个句子中，含有两个子句，它们分别是
 
 ```
 if (a<10) { println_int(a); }
-		  Δ					Δ
+	  Δ		    Δ
 while (a<b) { println_int(b); a=a+1; }
-			Δ					 	 Δ
+	    Δ			     Δ
 ```
 
 对于前者，它又含有一个子句
